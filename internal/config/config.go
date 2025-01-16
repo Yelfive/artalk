@@ -378,6 +378,7 @@ type AuthConf struct {
 		Enabled      bool   `koanf:"enabled" json:"enabled"`
 		ClientID     string `koanf:"client_id" json:"client_id"`
 		ClientSecret string `koanf:"client_secret" json:"client_secret"`
+		Host 		 string `koanf:"host" json:"host"`
 	} `koanf:"gitlab" json:"gitlab"`
 	Gitea struct {
 		Enabled      bool   `koanf:"enabled" json:"enabled"`

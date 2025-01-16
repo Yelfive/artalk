@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 if ! command -v pnpm &> /dev/null
 then
@@ -15,7 +15,8 @@ then
     volta install pnpm@9.10.0
 fi
 
-pnpm install --frozen-lockfile
+# build
+pnpm install --registry https://registry.npmmirror.com --frozen-lockfile
 pnpm build:all
 
 ## dist folders

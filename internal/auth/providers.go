@@ -46,6 +46,12 @@ func GetProviders(conf *config.Config) []goth.Provider {
 	}
 	// @see https://docs.gitlab.com/ee/integration/oauth_provider.html
 	if gitlabConf := conf.Auth.Gitlab; gitlabConf.Enabled {
+		if gitlabConf.Host == "" {
+			gitlab.AuthURL    = fmt.Sprintf("%s/oauth/authorize", gitlabConf.Host)
+			gitlab.TokenURL   = fmt.Sprintf("%s/oauth/token", gitlabConf.Host)
+			gitlab.ProfileURL = fmt.Sprintf("%s/api/v3/user", gitlabConf.Host)
+		}
+
 		providers = append(providers, gitlab.New(gitlabConf.ClientID, gitlabConf.ClientSecret, callbackURL("gitlab"),
 			"read_user", "email"))
 	}

@@ -3,14 +3,20 @@ FROM golang:1.22.7-alpine3.20 AS builder
 
 WORKDIR /source
 
+COPY repositories /etc/apk/repositories
+
 # install tools
 RUN set -ex \
-    && apk add --no-cache make git gcc musl-dev bash
+    && apk update \
+    && apk add --no-cache bash gcc git make musl-dev
+
+# ENV GOPROXY=https://goproxy.io,direct
+ENV GOPROXY=https://mirrors.aliyun.com/goproxy/
 
 # download go deps
 # (cache by separating the downloading of deps)
 COPY go.mod go.sum ./
-RUN go mod download
+RUN go mod download -x
 
 # copy source code
 COPY . .
@@ -22,7 +28,7 @@ ARG SKIP_UI_BUILD=false
 RUN set -ex \
     && if [ "$SKIP_UI_BUILD" = "false" ]; then \
         apk add --no-cache nodejs npm \
-        && npm install -g pnpm@9.10.0 \
+        && npm --registry=https://registry.npmmirror.com install -g pnpm@9.10.0 \
     ;fi
 
 RUN set -ex \
@@ -49,6 +55,8 @@ ARG TZ="Asia/Shanghai"
 ENV TZ=${TZ}
 
 COPY --from=builder /source/bin/artalk /artalk
+
+COPY repositories /etc/apk/repositories
 
 RUN apk add --no-cache bash tzdata \
     && ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime \
