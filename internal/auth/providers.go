@@ -2,7 +2,6 @@ package auth
 
 import (
 	"fmt"
-	"net/url"
 	"strings"
 
 	"github.com/artalkjs/artalk/v2/internal/config"
@@ -31,12 +30,10 @@ import (
 func GetProviders(conf *config.Config) []goth.Provider {
 	providers := []goth.Provider{}
 
-	u, _ := url.Parse(conf.Auth.Callback)
-	origin := u.Scheme + "://" + u.Host
-
 	callbackURL := func(provider string) string {
-		log.Debug("[SocialLogin] Callback URL: ", fmt.Sprintf("%s/api/v2/auth/%s/callback", origin, provider))
-		return fmt.Sprintf("%s/api/v2/auth/%s/callback", origin, provider)
+		url := strings.Replace(conf.Auth.Callback, "{provider}", provider, 1)
+		log.Debug("[SocialLogin] Callback URL: ", url)
+		return url
 	}
 
 	// @see https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps
@@ -46,7 +43,7 @@ func GetProviders(conf *config.Config) []goth.Provider {
 	}
 	// @see https://docs.gitlab.com/ee/integration/oauth_provider.html
 	if gitlabConf := conf.Auth.Gitlab; gitlabConf.Enabled {
-		if gitlabConf.Host == "" {
+		if gitlabConf.Host != "" {
 			gitlab.AuthURL    = fmt.Sprintf("%s/oauth/authorize", gitlabConf.Host)
 			gitlab.TokenURL   = fmt.Sprintf("%s/oauth/token", gitlabConf.Host)
 			gitlab.ProfileURL = fmt.Sprintf("%s/api/v3/user", gitlabConf.Host)

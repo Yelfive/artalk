@@ -65,14 +65,14 @@ func AuthSocialLogin(app *core.App, router fiber.Router) {
 		provider, err := gothic_fiber.GetProviderName(c)
 		if err != nil {
 			log.Error("[SocialLogin] ", err)
-			return common.RespError(c, 500, "Field to get provider name")
+			return common.RespError(c, 500, "Failed to get provider name")
 		}
 
 		// Fetch user
 		gothUser, err := gothic_fiber.CompleteUserAuth(c)
 		if err != nil {
 			log.Error("[SocialLogin] ", err)
-			return common.RespError(c, 500, "Field to complete user auth")
+			return common.RespError(c, 500, "Failed to complete user auth")
 		}
 
 		// Convert to social user
