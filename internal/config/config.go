@@ -31,6 +31,7 @@ type Config struct {
 	AdminNotify    AdminNotifyConf        `koanf:"admin_notify" json:"admin_notify"`       // 其他通知方式
 	Auth           AuthConf               `koanf:"auth" json:"auth"`                       // Social Login
 	Frontend       map[string]interface{} `koanf:"frontend" json:"frontend"`
+	Cors           CorsConf               `koanf:"cors" json:"cors"` // CORS Config
 
 	// deprecated options
 	// (only for unmarshal, please not reference)
@@ -43,6 +44,14 @@ type Config struct {
 	// ---------------------------
 
 	cfgFile string
+}
+
+type CorsConf struct {
+	Enabled          bool   `koanf:"enabled" json:"enabled"`
+	AllowOrigins     string `koanf:"allow_origins" json:"allow_origins"`
+	AllowMethods     string `koanf:"allow_methods" json:"allow_methods"`
+	AllowHeaders     string `koanf:"allow_headers" json:"allow_headers"`
+	AllowCredentials bool   `koanf:"allow_credentials" json:"allow_credentials"`
 }
 
 type HTTPConf struct {
@@ -378,7 +387,7 @@ type AuthConf struct {
 		Enabled      bool   `koanf:"enabled" json:"enabled"`
 		ClientID     string `koanf:"client_id" json:"client_id"`
 		ClientSecret string `koanf:"client_secret" json:"client_secret"`
-		Host 		 string `koanf:"host" json:"host"`
+		Host         string `koanf:"host" json:"host"`
 	} `koanf:"gitlab" json:"gitlab"`
 	Gitea struct {
 		Enabled      bool   `koanf:"enabled" json:"enabled"`

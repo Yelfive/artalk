@@ -319,6 +319,8 @@ auth:
     enabled: false
     client_id: ""
     client_secret: ""
+    # Host(Self-Managed GitLab 主机地址 e.g. https://gitlab.com)
+    host: ""
   # Gitea
   gitea:
     enabled: false

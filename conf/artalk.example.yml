@@ -60,6 +60,26 @@ http:
   # Proxy Header (fill `X-Forwarded-For` to get user real IP if behind a trusted reverse proxy or CDN)
   proxy_header: ""
 
+cors:
+  # Enable CORS
+  enabled: true
+
+  # Allow origin
+  # AllowOrigins defines a comma separated list of origins that may access the resource.
+  # This supports subdomain matching, so you can use a value like "https://*.example.com"
+  # to allow any subdomain of example.com to submit requests.
+  allow_origins: "*"
+
+  # Allow methods
+  # AllowMethods defines a list of methods allowed when accessing the resource.
+  # This is used in response to a preflight request.
+  allow_methods: "GET,POST,PUT,PATCH,DELETE,OPTIONS"
+
+  # Allow headers
+  # AllowHeaders defines a list of request headers that can be used when making
+  # the actual request. This is in response to a preflight request.
+  allow_headers: "Origin,Content-Type,Accept,Authorization,X-Requested-With,X-Forwarded-For,X-Forwarded-Proto,X-Forwarded-Host"
+
 # Logging
 log:
   # Enable logging
@@ -311,6 +331,8 @@ auth:
     enabled: false
     client_id: ""
     client_secret: ""
+    # Host(Self-Managed GitLab Host, e.g., https://gitlab.com)
+    host: ""
   # Gitea
   gitea:
     enabled: false
