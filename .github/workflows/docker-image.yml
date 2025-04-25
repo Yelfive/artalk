@@ -3,8 +3,6 @@ name: Docker Image CI
 on:
   push:
     branches: [ "work" ]
-  pull_request:
-    branches: [ "work" ]
 
 jobs:
 
@@ -14,7 +12,7 @@ jobs:
 
     env:
       IMAGE_REGISTRY: registry.cn-hongkong.aliyuncs.com
-      IMAGE_TAG: ${{ env.IMAGE_REGISTRY }}/yelfive/artalk:${{ github.run_id }}
+      IMAGE_TAG: registry.cn-hongkong.aliyuncs.com/yelfive/artalk:${{ github.run_id }}
 
     steps:
     - uses: actions/checkout@v4
@@ -29,7 +27,6 @@ jobs:
 
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag  ${{ env.IMAGE_TAG }}
-
 
     - name: Push to docker regsitry
       run: docker push ${{ env.IMAGE_TAG }}
