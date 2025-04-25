@@ -3,11 +3,15 @@ FROM golang:1.22.7-alpine3.20 AS builder
 
 WORKDIR /source
 
+COPY repositories /etc/apk/repositories
 
 # install tools
 RUN set -ex \
     && apk update \
     && apk add --no-cache bash gcc git make musl-dev
+
+# ENV GOPROXY=https://goproxy.io,direct
+ENV GOPROXY=https://mirrors.aliyun.com/goproxy/
 
 # download go deps
 # (cache by separating the downloading of deps)
@@ -24,7 +28,7 @@ ARG SKIP_UI_BUILD=false
 RUN set -ex \
     && if [ "$SKIP_UI_BUILD" = "false" ]; then \
         apk add --no-cache nodejs npm \
-        && npm install -g pnpm@9.10.0 \
+        && npm --registry=https://registry.npmmirror.com install -g pnpm@9.10.0 \
     ;fi
 
 RUN set -ex \
