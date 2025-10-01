@@ -15,7 +15,7 @@ jobs:
       IMAGE_TAG: registry.cn-hongkong.aliyuncs.com/yelfive/artalk:${{ github.run_id }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     
     # Log in to Docker registry
     - name: Log in to Docker registry
